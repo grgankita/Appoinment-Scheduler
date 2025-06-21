@@ -18,17 +18,28 @@ const ProfessionalProfile = () => {
         about: profileData.about,
         available: profileData.available,
       };
+      console.log(" Sending updateData:", updateData);
 
       const { data } = await axios.post(
         backendUrl + "/api/professional/update-profile",
         updateData,
-        { headers: { Authorization: `Bearer ${pToken}` } }
+        {
+          headers: {
+            Authorization: `Bearer ${pToken}`,
+            "Content-Type": "application/json",
+          },
+        }
       );
 
       if (data.success) {
         toast.success(data.message);
+        setProfileData((prev) => ({
+          ...prev,
+          ...updateData,
+        }));
+
         setIsEdit(false);
-        getProfileData();
+        // getProfileData();
       } else {
         toast.error(data.message);
       }

@@ -13,7 +13,9 @@ const authProfessional = async (req, res, next) => {
   const ptoken = authHeader.split(" ")[1];
   try {
     const token_decode = jwt.verify(ptoken, process.env.JWT_SECRET);
-    req.ProfId = token_decode.id;
+    req.profId = token_decode.id;
+    console.log(" Middleware set req.profId as:", req.profId);
+
     console.log(" Decoded token:", token_decode);
     next();
   } catch (error) {

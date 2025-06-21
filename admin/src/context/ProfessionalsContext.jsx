@@ -42,7 +42,7 @@ const ProfessionalsContextProvider = (props) => {
           headers: { Authorization: `Bearer ${pToken}` },
         }
       );
-      console.log(data.profileData);
+      console.log("Setting profileData to:", data.profileData);
       setProfileData(data.profileData);
     } catch (error) {
       console.log(error);

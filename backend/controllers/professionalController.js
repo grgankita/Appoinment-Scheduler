@@ -111,11 +111,13 @@ const changeAvailability = async (req, res) => {
 
 // API to get professional profile for  professional Panel
 const professionalProfile = async (req, res) => {
+  console.log(" Received req.body:", req.body);
+  // return res.json({ body: req.body });
   try {
-    console.log(" Controller triggered. profId:", req.ProfId);
+    console.log(" Controller triggered. profId:", req.profId);
 
     const profileData = await professionalModel
-      .findById(req.ProfId)
+      .findById(req.profId)
       .select("-password");
 
     res.json({ success: true, profileData });
@@ -128,14 +130,20 @@ const professionalProfile = async (req, res) => {
 // API to update professional profile data from  professional Panel
 const updateProfessionalProfile = async (req, res) => {
   try {
-    const { profId, fees, address, available } = req;
-
-    await professionalModel.findByIdAndUpdate(profId, {
-      fees,
-      address,
-      available,
-    });
-
+    // const { profId, fees, address, available } = req;
+    const profId = req.profId; // from middleware
+    const { fees, address, available, about } = req.body; // 🛠️ fix here
+    console.log(" Updating profile for:", req.profId);
+    console.log(" New data:", { fees, address, available, about });
+    await professionalModel.findByIdAndUpdate(
+      profId,
+      {
+        fees,
+        address,
+        available,
+      },
+      { new: true }
+    );
     res.json({ success: true, message: "Profile Updated" });
   } catch (error) {
     console.log(error);
